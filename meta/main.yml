@@ -1,0 +1,25 @@
+galaxy_info:
+  author: Karol Tomala
+  description: Golem Development for setting up BuildBot Worker on Windows
+  company: Golem Factory GmbH
+  license: BSD
+  min_ansible_version: 2.4
+
+  platforms:
+  - name: Windows
+    versions:
+    - 2012R2
+
+  galaxy_tags:
+    - golem
+    - golem-dev
+    - golem-dev-win
+    - golem-dev-windows
+    - golem_dev
+    - golem_dev_win
+    - golem_dev_windows
+    - buildbot
+    - dev
+    - development
+    - win
+    - windows
