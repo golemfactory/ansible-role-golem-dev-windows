@@ -3,7 +3,7 @@
 
 build_resources_dir: 'C:\BuildResources'
 
-hyperg_version: 0.2.9
+hyperg_version: 0.2.10
 hyperg_package_url: "https://github.com/golemfactory/golem-hyperdrive/releases/download/v{{ hyperg_version }}/hyperg_{{ hyperg_version }}_windows-x64.zip"
 hyperg_package_path: '{{ build_resources_dir }}\hyperg_0.2.3_windows-x64.zip'
 
