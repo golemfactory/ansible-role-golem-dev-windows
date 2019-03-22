@@ -94,3 +94,78 @@
     force: no
   args:
     creates: '{{ vc_redist_path }}'
+
+
+
+- name: Download rust-init
+  become: yes
+  become_user: "{{worker_user}}"
+  win_get_url:
+    url: https://win.rustup.rs/x86_64
+    dest: '{{_worker_user_home}}\rustup-init.exe'
+  args:
+    creates: '{{_worker_user_home}}\.cargo'
+
+- name: Install rust
+  become: yes
+  become_user: "{{worker_user}}"
+  win_shell:
+    '{{_worker_user_home}}\rustup-init.exe -y --default-host x86_64-pc-windows-msvc --default-toolchain stable-msvc'
+  args:
+    creates: '{{_worker_user_home}}\.cargo'
+
+- name: Clean rust Installer
+  win_file:
+    path: '{{_worker_user_home}}\rustup-init.exe'
+    state: absent
+
+- name: Install rust nightly
+  become: yes
+  become_user: "{{worker_user}}"
+  win_shell:
+    rustup install nightly
+
+- name: Install grcov
+  become: yes
+  become_user: "{{worker_user}}"
+  win_shell: cargo install grcov
+  args:
+    creates: '{{_worker_cargo_bin_dir}}\grcov.exe'
+
+- name: Add a powershell module
+  win_psmodule:
+    name: Pscx
+    state: present
+    allow_clobber: True
+
+- name: Grab clang binaries
+  win_get_url:
+    url: https://github.com/marco-c/llvm-appveyor/releases/download/llvm_342383/clang.tar.bz2
+    dest: '{{_worker_user_home}}\clang.tar.bz2'
+    creates: C:\BuildResources\clang
+
+- name: install llvm 7.0
+  become: yes
+  become_user: "{{worker_user}}"
+  win_unzip:
+    src: '{{_worker_user_home}}\clang.tar.bz2'
+    dest: '{{_worker_user_home}}\clang'
+    creates: C:\BuildResources\clang
+
+- name: install llvm 7.0
+  become: yes
+  become_user: "{{worker_user}}"
+  win_unzip:
+    src: '{{_worker_user_home}}\clang\clang.tar'
+    dest: C:\BuildResources\clang
+    creates: C:\BuildResources\clang
+
+- name: Clean llvm Installer temp archive
+  win_file:
+    path: '{{_worker_user_home}}\clan'
+    state: absent
+
+- name: Clean llvm Installer download
+  win_file:
+    path: '{{_worker_user_home}}\clang.tar.bz2'
+    state: absent
